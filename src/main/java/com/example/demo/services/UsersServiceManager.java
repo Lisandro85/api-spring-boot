@@ -27,7 +27,12 @@ public class UsersServiceManager implements UsersService{
 
     @Override
     public Users save(Users user) {
-        return this.repository.save(user);
+        // Verificar si el email ya está registrado
+        if (repository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("El email ya está registrado.");
+        }
+        // Si no existe, guardar el usuario
+        return repository.save(user);
     }
 
     @Override
@@ -44,12 +49,12 @@ public class UsersServiceManager implements UsersService{
     }
 
     @Override
-    public void deleteUser(long id) {
+    public boolean deleteUser(long id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
-        } else {
-            throw new EntityNotFoundException("Usuario con ID " + id + " no encontrado");
+            return true;
         }
+        return false;
     }
 
 }
