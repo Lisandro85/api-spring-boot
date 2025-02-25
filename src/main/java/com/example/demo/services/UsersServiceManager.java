@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entities.Users;
 import com.example.demo.repositories.UsersRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ public class UsersServiceManager implements UsersService{
     }
 
     @Override
-    public Users findById(Long id) {
-        return this.repository.findById(id).get();
+    public Optional<Users> findById(Long id) {
+        return this.repository.findById(id);
     }
 
     @Override
@@ -40,6 +41,15 @@ public class UsersServiceManager implements UsersService{
         userExist.setIsActive(user.getIsActive());
 
         return this.repository.save(userExist);
-
     }
+
+    @Override
+    public void deleteUser(long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Usuario con ID " + id + " no encontrado");
+        }
+    }
+
 }

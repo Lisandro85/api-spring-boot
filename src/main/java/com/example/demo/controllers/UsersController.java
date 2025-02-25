@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -31,14 +33,14 @@ public class UsersController {
 
     @GetMapping("/{id}")
     @Transactional(readOnly = true)
-    public Users getByIdUser(@PathVariable Long id){
+    public Optional<Users> getByIdUser(@PathVariable Long id){
         return this.serviceManager.findById(id);
     }
 
     @PatchMapping("/{id}")
     @Transactional
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Users user){
-      Optional <Users> usersExist= Optional.of(this.serviceManager.findById(id));
+      Optional<Users> usersExist=this.serviceManager.findById(id);
       if(usersExist.isPresent()){
           Users newUser=usersExist.get();
           newUser.setName(user.getName());
@@ -54,6 +56,13 @@ public class UsersController {
       return ResponseEntity.notFound().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        serviceManager.deleteUser(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Usuario eliminado con éxito");
+        return ResponseEntity.ok(response);
+    }
 
 
 

@@ -11,7 +11,10 @@ public class Users {
     private String name;
     private String lastName;
     private int age;
+
+    @Column(unique = true,nullable = false)
     private String email;
+
     private Boolean isActive;
 
     public Users(){}
