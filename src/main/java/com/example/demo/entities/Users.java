@@ -10,13 +10,13 @@ public class Users {
     private Long id;
     private String name;
     private String lastName;
-    private double age;
+    private int age;
     private String email;
     private Boolean isActive;
 
     public Users(){}
 
-    public Users(Long id,String name,String lastName,double age,String email,Boolean isActive){
+    public Users(Long id,String name,String lastName,int age,String email,Boolean isActive){
         this.id=id;
         this.name=name;
         this.lastName=lastName;
@@ -48,11 +48,11 @@ public class Users {
         this.lastName = lastName;
     }
 
-    public double getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(double age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
